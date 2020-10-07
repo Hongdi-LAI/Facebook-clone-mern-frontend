@@ -2,13 +2,18 @@ import React from "react";
 import "./MessageSender.css";
 import { Avatar, Input } from "@material-ui/core";
 import { useState } from "react";
+import axios from "./axios";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import FormData from "form-data";
+import { useStateValue } from "./StateProvider";
 
 function MessageSender() {
   const [input, setInput] = useState("");
   const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [{ user }, dispatch] = useStateValue();
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -16,16 +21,56 @@ function MessageSender() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     console.log("submitting");
+
+    if (image) {
+      const imgForm = new FormData();
+      imgForm.append("file", image, image.name);
+
+      axios
+        .post("/upload/image", imgForm, {
+          headers: {
+            accept: "application/json",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Content-Type": `multipart/form-data;boundary=${imgForm._boundary}`,
+          },
+        })
+        .then((res) => {
+          const postData = {
+            text: input,
+            imgName: res.data.filename,
+            user: user.displayName,
+            avatar: user.photoURL,
+            timestamp: Date.now(),
+          };
+          savePost(postData);
+        });
+    } else {
+      const postData = {
+        text: input,
+        user: user.displayName,
+        avatar: user.photoURL,
+        timestamp: Date.now(),
+      };
+      savePost(postData);
+    }
+
+    setImageUrl("");
+    setInput("");
+    setImage(null);
   };
 
+  const savePost = async (postData) => {
+    await axios.post("/upload/post", postData).then((resp) => {
+      console.log(resp);
+    });
+  };
   return (
     <div className="messageSender">
       <div className="messageSender__top">
-        <Avatar src="" />
+        <Avatar src={user.photoURL} />
         <form>
           <input
             type="text"

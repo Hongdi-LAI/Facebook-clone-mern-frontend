@@ -20,8 +20,17 @@ function Post({ profilePic, message, timestamp, imgName, username }) {
       </div>
       <div className="post__bottom">
         <p>{message}</p>
-        {/* Image not yet input */}
       </div>
+      {imgName ? (
+        <div className="post__image">
+          <img
+            src={`https://mern-facebook-app.herokuapp.com/retrieve/images/single?name=${imgName}`}
+            width="95%"
+          />
+        </div>
+      ) : (
+        console.log("Debug >>> no image here")
+      )}
       <div className="post__options">
         <div className="post__option">
           <ThumbUpIcon />

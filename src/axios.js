@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://facebook-clone-mern.herokuapp.com",
+  baseURL: "https://mern-facebook-app.herokuapp.com/",
 });
 
 export default instance;
