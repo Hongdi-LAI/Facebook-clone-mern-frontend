@@ -12,6 +12,7 @@
     "context": "^1.0.0",
     "firebase": "^7.22.1",
     "form-data": "^3.0.0",
+    "push-js": "^1.1.1",
     "pusher-js": "^7.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

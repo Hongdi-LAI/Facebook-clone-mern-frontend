@@ -36,8 +36,9 @@
 }
 
 .post__options {
+  margin-top: 10px;
   padding: 10px;
-  border-top: 1px solid lightgray;
+  border-top: 1px solid #eff2f5;
   display: flex;
   justify-content: space-evenly;
   font-size: medium;
